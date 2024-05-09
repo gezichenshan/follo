@@ -1,5 +1,5 @@
 <template>
   <div>
-    <UICalender />
+    <UICalenderTable />
   </div>
 </template>
