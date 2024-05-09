@@ -2,7 +2,13 @@
 </script>
 
 <template>
-  <div>Canlender</div>
+  <div>
+    Canlender
+
+    <a-button type="primary">
+      button
+    </a-button>
+  </div>
 </template>
 
 <style scoped></style>
