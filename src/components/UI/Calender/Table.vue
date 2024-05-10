@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { h } from 'vue'
+import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons-vue'
+
+import dayjs from 'dayjs'
 import { getTableDateTdArr } from '@/utils/calender'
 import type { DayItem } from '@/model'
 
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
-const date = '2024-05'
+const date = ref(dayjs().format('YYYY-MM'))
 
-const tableDateArr = getTableDateTdArr(date)
+const tableDateArr = computed(() => {
+  return getTableDateTdArr(date.value)
+})
 
 const selectedDay = ref<DayItem>()
 
@@ -21,7 +27,7 @@ function judgeWorkingDayIsInUserSetting(workingDay?: number) {
 }
 
 const mockedTableDateArr = computed(() => {
-  return tableDateArr.map((week) => {
+  return tableDateArr.value.map((week) => {
     return week.map((item) => {
       return {
         day: item.day,
@@ -37,18 +43,27 @@ const mockedTableDateArr = computed(() => {
 function handleDaySelectedChange(day: DayItem) {
   selectedDay.value = day
 }
+function handleMonChange(type: 'left' | 'right') {
+  if (type === 'left') {
+    date.value = dayjs(date.value).subtract(1, 'M').format('YYYY-MM')
+  }
+  if (type === 'right') {
+    date.value = dayjs(date.value).add(1, 'M').format('YYYY-MM')
+  }
+}
 </script>
 
 <template>
-  <div>
-    Canlender
+  <div class="calender-ctn">
     <div>
+      <a-button type="primary" shape="circle" :icon="h(CaretLeftOutlined)" @click="() => handleMonChange('left')" />
       {{ date }}
+      <a-button type="primary" shape="circle" :icon="h(CaretRightOutlined)" @click="() => handleMonChange('right')" />
     </div>
-    <table>
+    <table class="table">
       <thead>
         <tr>
-          <th v-for="(s, i) in DaysTableHead" :key=" i">
+          <th v-for="(s, i) in DaysTableHead" :key="i" class="table-head">
             {{ s }}
           </th>
         </tr>
@@ -64,4 +79,12 @@ function handleDaySelectedChange(day: DayItem) {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="css">
+.table {
+  border-spacing: 0 8px;
+}
+.table-head {
+  font-size: 12px;
+  color: var(--text-color);
+}
+</style>
