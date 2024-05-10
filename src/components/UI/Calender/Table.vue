@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h } from 'vue'
+import { h, nextTick } from 'vue'
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons-vue'
 
 import dayjs from 'dayjs'
@@ -9,10 +9,6 @@ import type { DayItem } from '@/model'
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
 const date = ref(dayjs().format('YYYY-MM'))
-
-const tableDateArr = computed(() => {
-  return getTableDateTdArr(date.value)
-})
 
 const selectedDay = ref<DayItem>()
 
@@ -26,8 +22,8 @@ function judgeWorkingDayIsInUserSetting(workingDay?: number) {
   return false
 }
 
-const mockedTableDateArr = computed(() => {
-  return tableDateArr.value.map((week) => {
+function generateTableData(date: string) {
+  return getTableDateTdArr(date).map((week) => {
     return week.map((item) => {
       return {
         day: item.day,
@@ -37,19 +33,43 @@ const mockedTableDateArr = computed(() => {
       }
     })
   })
-},
-)
-
-function handleDaySelectedChange(day: DayItem) {
-  selectedDay.value = day
 }
+
+const mockedTableDateArr = ref(generateTableData(date.value))
+// const mockedTableDateArr = computed(() => {
+//   return generateTableData(date.value)
+// },
+// )
+
+const fakeTbodyDateArr = ref([[]])
+
+const swipeDirection = ref<'left' | 'right' >()
+const hideCurrentTable = ref(true)
+
+// function handleDaySelectedChange(day: DayItem) {
+//   selectedDay.value = day
+// }
+
 function handleMonChange(type: 'left' | 'right') {
   if (type === 'left') {
-    date.value = dayjs(date.value).subtract(1, 'M').format('YYYY-MM')
+    const datePrevMonth = dayjs(date.value).subtract(1, 'M').format('YYYY-MM')
+    date.value = datePrevMonth
+    mockedTableDateArr.value = generateTableData(datePrevMonth)
+    fakeTbodyDateArr.value = generateTableData(dayjs(date.value).add(1, 'M').format('YYYY-MM'))
   }
   if (type === 'right') {
-    date.value = dayjs(date.value).add(1, 'M').format('YYYY-MM')
+    const dateNextMonth = dayjs(date.value).add(1, 'M').format('YYYY-MM')
+    date.value = dateNextMonth
+    mockedTableDateArr.value = generateTableData(dateNextMonth)
+    fakeTbodyDateArr.value = generateTableData(dayjs(date.value).subtract(1, 'M').format('YYYY-MM'))
   }
+  swipeDirection.value = type
+  // 隐藏，生成动画
+  hideCurrentTable.value = false
+
+  nextTick(() => {
+    hideCurrentTable.value = true
+  })
 }
 </script>
 
@@ -68,13 +88,7 @@ function handleMonChange(type: 'left' | 'right') {
           </th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="(week, i) in mockedTableDateArr" :key="i">
-          <td v-for="(day, j) in week" :key="j">
-            <UICalenderDayButton :data="day" @change="handleDaySelectedChange" />
-          </td>
-        </tr>
-      </tbody>
+      <UICalenderTableBody v-if="hideCurrentTable" :prev-data="fakeTbodyDateArr" :data="mockedTableDateArr" :direction="swipeDirection" />
     </table>
   </div>
 </template>
@@ -87,4 +101,63 @@ function handleMonChange(type: 'left' | 'right') {
   font-size: 12px;
   color: var(--text-color);
 }
+/*
+tbody.left {
+  animation: swipeFromRightToCenter 0.35s ease-in-out normal both;
+}
+
+tbody.right {
+  animation: swipeFromLeftToCenter 0.35s ease-in-out normal both;
+}
+
+.fake-tbody {
+  position: absolute;
+  top: 0;
+  top: 74px;
+}
+
+.fake-tbody.left {
+  right: 20%;
+  animation: swipeToLeft 0.35s ease-in-out normal both;
+}
+.fake-tbody.right {
+  left: 20%;
+  animation: swipeToRight 0.35s ease-in-out normal both;
+}
+
+@keyframes swipeFromLeftToCenter {
+  0% {
+    transform: translateX(-115%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes swipeFromRightToCenter {
+  0% {
+    transform: translateX(115%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes swipeToLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-115%);
+  }
+}
+
+@keyframes swipeToRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(115%);
+  }
+} */
 </style>

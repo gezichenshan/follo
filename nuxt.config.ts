@@ -3,5 +3,5 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src',
   modules: ['@unocss/nuxt', '@pinia/nuxt', '@ant-design-vue/nuxt'],
-  css: ['@/assets/css/theme.css'],
+  css: ['@/assets/css/variables.css', '@/assets/css/reboot.css'],
 })
