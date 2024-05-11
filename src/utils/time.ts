@@ -52,3 +52,14 @@ export function getMonthEndWorkingDayOfGivenDate(date: string | Dayjs) {
 export function getWorkingDayOfGivenDate(date: string | Dayjs) {
   return parseDayToCnFormat(dayjs(date).day())
 }
+
+/**
+ * 获取YYYY-MM-DD中的D
+ * @param date h
+ * @returns string
+ */
+export function getDayFromDate(date: string) {
+  if (!date)
+    return
+  return dayjs(date).format('D')
+}

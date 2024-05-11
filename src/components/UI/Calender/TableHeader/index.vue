@@ -55,6 +55,7 @@ watch(date, () => {
   width: 125px;
   display: flex;
   justify-content: center;
+  user-select: none;
 }
 
 .date-title.right {
@@ -67,6 +68,7 @@ watch(date, () => {
 
 .date-title.fake {
   position: absolute;
+  z-index: -1;
 }
 
 .date-title.fake.right {

@@ -4,6 +4,7 @@ import { nextTick } from 'vue'
 import dayjs from 'dayjs'
 import { getTableDateTdArr } from '@/utils/calender'
 import type { DayItem } from '@/model'
+import * as TimeUtil from '@/utils/time'
 
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
@@ -11,56 +12,69 @@ const date = ref(dayjs().format('YYYY-MM'))
 
 const selectedDay = ref<DayItem>()
 
-// Mock data
-const availableWorkingDaysByUserSetting = [1, 2, 3, 4, 5]// 周一到周五
+const tableData = ref(getTableDateTdArr(date.value))
 
-function judgeWorkingDayIsInUserSetting(workingDay?: number) {
+/**
+ * TODO 这个方法应该由外部传进来，进行判断那一天是用户可选的
+ * 此处为模拟方法。
+ * @param date
+ */
+function isDateAvailableJudger(date: string) {
+  const availableWorkingDaysByUserSetting = [1, 2, 3, 4, 5]// 周一到周五
+  const workingDay = TimeUtil.getWorkingDayOfGivenDate(date)
   if (workingDay !== undefined && workingDay !== null) {
     return availableWorkingDaysByUserSetting.includes(workingDay)
   }
   return false
 }
 
-function generateTableData(date: string) {
-  return getTableDateTdArr(date).map((week) => {
+const mockedTableData = computed<DayItem[][]>(() => {
+  return tableData.value.map((week) => {
     return week.map((item) => {
       return {
-        day: item.day,
-        selected: selectedDay.value?.day === item.day,
-        available: judgeWorkingDayIsInUserSetting(item.workingDay),
+        date: item.date,
+        selected: selectedDay.value?.date === item.date,
+        available: isDateAvailableJudger(item.date),
         isToday: item.isToday,
       }
     })
   })
-}
+})
 
-const mockedTableDateArr = ref(generateTableData(date.value))
-
-const fakeTbodyDateArr = ref([[]])
+const fakeTableData = ref<DayItem[][]>([[]])
 
 const swipeDirection = ref<'left' | 'right' >()
-const hideCurrentTable = ref(true)
+const tableVisible = ref(true)
 
 function handleMonChange(type: 'left' | 'right') {
   if (type === 'left') {
     const datePrevMonth = dayjs(date.value).subtract(1, 'M').format('YYYY-MM')
     date.value = datePrevMonth
-    mockedTableDateArr.value = generateTableData(datePrevMonth)
-    fakeTbodyDateArr.value = generateTableData(dayjs(date.value).add(1, 'M').format('YYYY-MM'))
+    tableData.value = getTableDateTdArr(datePrevMonth)
+    fakeTableData.value = getTableDateTdArr(dayjs(date.value).add(1, 'M').format('YYYY-MM'))
   }
   if (type === 'right') {
     const dateNextMonth = dayjs(date.value).add(1, 'M').format('YYYY-MM')
     date.value = dateNextMonth
-    mockedTableDateArr.value = generateTableData(dateNextMonth)
-    fakeTbodyDateArr.value = generateTableData(dayjs(date.value).subtract(1, 'M').format('YYYY-MM'))
+    tableData.value = getTableDateTdArr(dateNextMonth)
+    fakeTableData.value = getTableDateTdArr(dayjs(date.value).subtract(1, 'M').format('YYYY-MM'))
   }
   swipeDirection.value = type
-  // 隐藏，生成动画
-  hideCurrentTable.value = false
-  nextTick(() => {
-    hideCurrentTable.value = true
-  })
 }
+
+function handleDateSelect(data: DayItem) {
+  selectedDay.value = data
+}
+
+watch(date, () => {
+  if (swipeDirection.value === undefined)
+    return
+  // 隐藏，生成动画
+  tableVisible.value = false
+  nextTick(() => {
+    tableVisible.value = true
+  })
+})
 </script>
 
 <template>
@@ -74,7 +88,7 @@ function handleMonChange(type: 'left' | 'right') {
           </th>
         </tr>
       </thead>
-      <UICalenderTableBody v-if="hideCurrentTable" :prev-data="fakeTbodyDateArr" :data="mockedTableDateArr" :direction="swipeDirection" />
+      <UICalenderTableBody v-if="tableVisible" :prev-data="fakeTableData" :data="mockedTableData" :direction="swipeDirection" @select="handleDateSelect" />
     </table>
   </div>
 </template>

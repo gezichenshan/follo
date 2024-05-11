@@ -1,13 +1,20 @@
 <script setup lang="ts">
-type TBodyData = { day: number, selected: boolean, available: boolean, isToday: boolean | undefined }[][]
+import type { DayItem } from '@/model'
+
 interface Props {
-  prevData: TBodyData
-  data: TBodyData
+  prevData: DayItem[][]
+  data: DayItem[][]
   direction?: 'left' | 'right'
   noAnimation?: boolean
 }
 const props = defineProps<Props>()
+const emits = defineEmits(['select'])
+
 const { prevData, data, direction } = toRefs(props)
+
+function chooseDate(day: DayItem) {
+  emits('select', day)
+}
 </script>
 
 <template>
@@ -21,7 +28,7 @@ const { prevData, data, direction } = toRefs(props)
   <tbody class="tbody" :class="[direction === 'left' && 'left', direction === 'right' && 'right']">
     <tr v-for="(week, i) in data" :key="i">
       <td v-for="(day, j) in week" :key="j">
-        <UICalenderDayButton :data="day" />
+        <UICalenderDayButton :data="day" @select="() => chooseDate(day)" />
       </td>
     </tr>
   </tbody>
