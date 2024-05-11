@@ -1,7 +1,6 @@
 export interface DayItem {
-  day: number
-  selected: boolean
-  available: boolean
+  date: string
+  selected?: boolean
+  available?: boolean
   isToday?: boolean
-
 }

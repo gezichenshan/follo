@@ -1,13 +1,20 @@
 <script setup lang="ts">
-type TBodyData = { day: number, selected: boolean, available: boolean, isToday: boolean | undefined }[][]
+import type { DayItem } from '@/model'
+
 interface Props {
-  prevData: TBodyData
-  data: TBodyData
+  prevData: DayItem[][]
+  data: DayItem[][]
   direction?: 'left' | 'right'
   noAnimation?: boolean
 }
 const props = defineProps<Props>()
+const emits = defineEmits(['select'])
+
 const { prevData, data, direction } = toRefs(props)
+
+function chooseDate(day: DayItem) {
+  emits('select', day)
+}
 </script>
 
 <template>
@@ -21,25 +28,32 @@ const { prevData, data, direction } = toRefs(props)
   <tbody class="tbody" :class="[direction === 'left' && 'left', direction === 'right' && 'right']">
     <tr v-for="(week, i) in data" :key="i">
       <td v-for="(day, j) in week" :key="j">
-        <UICalenderDayButton :data="day" />
+        <UICalenderDayButton :data="day" @select="() => chooseDate(day)" />
       </td>
     </tr>
   </tbody>
 </template>
 
 <style scoped>
-tbody.right:not(.noAnimation) {
+tbody.right {
   animation: swipeFromRightToCenter 0.35s ease-in-out normal both;
 }
 
-tbody.left:not(.noAnimation) {
+tbody.left {
   animation: swipeFromLeftToCenter 0.35s ease-in-out normal both;
 }
 
 .fake-tbody {
+  width: 100%;
   position: absolute;
   top: 0;
-  top: 68px;
+  top: 36px;
+}
+
+.fake-tbody tr {
+  display: flex;
+  margin: 8px 0;
+  justify-content: space-around;
 }
 
 .fake-tbody.right,
@@ -47,11 +61,11 @@ tbody.left:not(.noAnimation) {
   /* right: 20%; */
 }
 
-.fake-tbody.right:not(.noAnimation) {
+.fake-tbody.right {
   animation: swipeToLeft 0.35s ease-in-out normal both;
 }
 
-.fake-tbody.left:not(.noAnimation) {
+.fake-tbody.left {
   animation: swipeToRight 0.35s ease-in-out normal both;
 }
 

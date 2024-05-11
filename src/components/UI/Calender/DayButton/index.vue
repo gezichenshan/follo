@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { DayItem } from '@/model'
+import * as TimeUtil from '@/utils/time'
 
 interface Props {
   data: DayItem
 }
 const props = defineProps<Props>()
-const emits = defineEmits(['change'])
+const emits = defineEmits(['select'])
 
 const { data } = toRefs(props)
 
@@ -13,13 +14,13 @@ function handleClick(day: DayItem) {
   if (!day.available) {
     return
   }
-  emits('change', day)
+  emits('select', day)
 }
 </script>
 
 <template>
   <button class="day-btn" :class="[data.available && 'enabled', data.selected && 'selected']" @click="() => handleClick(props.data)">
-    {{ data.day }}
+    {{ TimeUtil.getDayFromDate(data.date) }}
     <span v-if="data.isToday" class="addon-today">今</span>
   </button>
 </template>
