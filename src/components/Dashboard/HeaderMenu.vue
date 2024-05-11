@@ -10,11 +10,14 @@
           <a-button class="btn-userprofile">
             <span class="txt-username">J</span>
             <span class="">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true">
+              <svg
+                width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
                 <path
                   d="M12.3535 8.06058L8.7071 11.707C8.31658 12.0976 7.68341 12.0976 7.29289 11.707L3.64644 8.06058C3.33146 7.7456 3.55454 7.20703 4 7.20703H12C12.4454 7.20703 12.6685 7.7456 12.3535 8.06058Z"
-                  fill="currentColor"></path>
+                  fill="currentColor"
+                />
               </svg>
             </span>
           </a-button>
@@ -35,7 +38,11 @@
   width: 100%;
   height: 72px;
   box-sizing: inherit;
-  background: linear-gradient(0deg, rgb(250 250 250 / 0%) 0%, rgb(250 250 250 / 100%) 16%);
+  background: linear-gradient(
+    0deg,
+    rgb(250 250 250 / 0%) 0%,
+    rgb(250 250 250 / 100%) 16%
+  );
 
   .section-user {
     display: flex;
@@ -82,7 +89,7 @@
       align-items: center;
       overflow: hidden;
       border-radius: 50%;
-      background: var(--color-grey-3, #CCCCCC);
+      background: var(--color-grey-3, #cccccc);
       -webkit-user-select: none;
       -moz-user-select: none;
       user-select: none;
