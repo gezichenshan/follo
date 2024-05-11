@@ -28,18 +28,25 @@ const { prevData, data, direction } = toRefs(props)
 </template>
 
 <style scoped>
-tbody.right:not(.noAnimation) {
+tbody.right {
   animation: swipeFromRightToCenter 0.35s ease-in-out normal both;
 }
 
-tbody.left:not(.noAnimation) {
+tbody.left {
   animation: swipeFromLeftToCenter 0.35s ease-in-out normal both;
 }
 
 .fake-tbody {
+  width: 100%;
   position: absolute;
   top: 0;
-  top: 68px;
+  top: 36px;
+}
+
+.fake-tbody tr {
+  display: flex;
+  margin: 8px 0;
+  justify-content: space-around;
 }
 
 .fake-tbody.right,
@@ -47,11 +54,11 @@ tbody.left:not(.noAnimation) {
   /* right: 20%; */
 }
 
-.fake-tbody.right:not(.noAnimation) {
+.fake-tbody.right {
   animation: swipeToLeft 0.35s ease-in-out normal both;
 }
 
-.fake-tbody.left:not(.noAnimation) {
+.fake-tbody.left {
   animation: swipeToRight 0.35s ease-in-out normal both;
 }
 

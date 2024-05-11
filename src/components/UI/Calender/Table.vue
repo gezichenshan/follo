@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { h, nextTick } from 'vue'
-import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons-vue'
+import { nextTick } from 'vue'
 
 import dayjs from 'dayjs'
 import { getTableDateTdArr } from '@/utils/calender'
@@ -36,19 +35,11 @@ function generateTableData(date: string) {
 }
 
 const mockedTableDateArr = ref(generateTableData(date.value))
-// const mockedTableDateArr = computed(() => {
-//   return generateTableData(date.value)
-// },
-// )
 
 const fakeTbodyDateArr = ref([[]])
 
 const swipeDirection = ref<'left' | 'right' >()
 const hideCurrentTable = ref(true)
-
-// function handleDaySelectedChange(day: DayItem) {
-//   selectedDay.value = day
-// }
 
 function handleMonChange(type: 'left' | 'right') {
   if (type === 'left') {
@@ -66,7 +57,6 @@ function handleMonChange(type: 'left' | 'right') {
   swipeDirection.value = type
   // 隐藏，生成动画
   hideCurrentTable.value = false
-
   nextTick(() => {
     hideCurrentTable.value = true
   })
@@ -75,11 +65,7 @@ function handleMonChange(type: 'left' | 'right') {
 
 <template>
   <div class="calender-ctn">
-    <div>
-      <a-button type="primary" shape="circle" :icon="h(CaretLeftOutlined)" @click="() => handleMonChange('left')" />
-      {{ date }}
-      <a-button type="primary" shape="circle" :icon="h(CaretRightOutlined)" @click="() => handleMonChange('right')" />
-    </div>
+    <UICalenderTableHeader :date="date" @change="handleMonChange" />
     <table class="table">
       <thead>
         <tr>
@@ -94,70 +80,20 @@ function handleMonChange(type: 'left' | 'right') {
 </template>
 
 <style scoped lang="css">
+.calender-ctn {
+  width: 412px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
 .table {
+  position: relative;
   border-spacing: 0 8px;
+  width: 100%;
 }
 .table-head {
   font-size: 12px;
   color: var(--text-color);
 }
-/*
-tbody.left {
-  animation: swipeFromRightToCenter 0.35s ease-in-out normal both;
-}
-
-tbody.right {
-  animation: swipeFromLeftToCenter 0.35s ease-in-out normal both;
-}
-
-.fake-tbody {
-  position: absolute;
-  top: 0;
-  top: 74px;
-}
-
-.fake-tbody.left {
-  right: 20%;
-  animation: swipeToLeft 0.35s ease-in-out normal both;
-}
-.fake-tbody.right {
-  left: 20%;
-  animation: swipeToRight 0.35s ease-in-out normal both;
-}
-
-@keyframes swipeFromLeftToCenter {
-  0% {
-    transform: translateX(-115%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes swipeFromRightToCenter {
-  0% {
-    transform: translateX(115%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes swipeToLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-115%);
-  }
-}
-
-@keyframes swipeToRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(115%);
-  }
-} */
 </style>
