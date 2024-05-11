@@ -6,6 +6,8 @@ import { getTableDateTdArr } from '@/utils/calender'
 import type { DayItem } from '@/model'
 import * as TimeUtil from '@/utils/time'
 
+const emits = defineEmits(['select'])
+
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
 const date = ref(dayjs().format('YYYY-MM'))
@@ -66,6 +68,11 @@ function handleDateSelect(data: DayItem) {
   selectedDay.value = data
 }
 
+watch(selectedDay, () => {
+  console.log(1, selectedDay.value)
+  emits('select', selectedDay.value)
+})
+
 watch(date, () => {
   if (swipeDirection.value === undefined)
     return
@@ -79,7 +86,7 @@ watch(date, () => {
 
 <template>
   <div class="calender-ctn">
-    <UICalenderTableHeader :date="date" @change="handleMonChange" />
+    <UICalenderDatepickerTableHeader :date="date" @change="handleMonChange" />
     <table class="table">
       <thead>
         <tr>
@@ -88,7 +95,7 @@ watch(date, () => {
           </th>
         </tr>
       </thead>
-      <UICalenderTableBody v-if="tableVisible" :prev-data="fakeTableData" :data="mockedTableData" :direction="swipeDirection" @select="handleDateSelect" />
+      <UICalenderDatepickerTableBody v-if="tableVisible" :prev-data="fakeTableData" :data="mockedTableData" :direction="swipeDirection" @select="handleDateSelect" />
     </table>
   </div>
 </template>

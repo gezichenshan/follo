@@ -21,14 +21,14 @@ function chooseDate(day: DayItem) {
   <tbody class="fake-tbody" :class="[direction === 'left' && 'left', direction === 'right' && 'right']">
     <tr v-for="(week, i) in prevData" :key="i">
       <td v-for="(day, j) in week" :key="j">
-        <UICalenderDayButton :data="day" />
+        <UICalenderDatepickerDayButton :data="day" />
       </td>
     </tr>
   </tbody>
   <tbody class="tbody" :class="[direction === 'left' && 'left', direction === 'right' && 'right']">
     <tr v-for="(week, i) in data" :key="i">
       <td v-for="(day, j) in week" :key="j">
-        <UICalenderDayButton :data="day" @select="() => chooseDate(day)" />
+        <UICalenderDatepickerDayButton :data="day" @select="() => chooseDate(day)" />
       </td>
     </tr>
   </tbody>
