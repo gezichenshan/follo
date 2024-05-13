@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { TimeObj } from '@/model'
+
 interface Props {
-  data: { id: number, selected: boolean, time: string }
+  data: TimeObj
 }
 const props = defineProps<Props>()
 
@@ -35,6 +37,7 @@ function handleSelect() {
   margin: 10px;
   font-size: 16px;
   white-space: pre;
+  overflow: hidden;
 }
 .time-btn {
   width: 100%;

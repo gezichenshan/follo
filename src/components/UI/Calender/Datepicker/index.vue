@@ -69,7 +69,6 @@ function handleDateSelect(data: DayItem) {
 }
 
 watch(selectedDay, () => {
-  console.log(1, selectedDay.value)
   emits('select', selectedDay.value)
 })
 
@@ -107,6 +106,7 @@ watch(date, () => {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
+  padding: 0 20px;
 }
 .table {
   position: relative;

@@ -38,7 +38,7 @@ watch(date, () => {
 </script>
 
 <template>
-  <div class="flex justify-center items-center relative">
+  <div class="calender-header flex justify-center items-center relative">
     <a-button type="primary" shape="circle" :icon="h(CaretLeftOutlined)" @click="() => handleChange('left')" />
     <div v-if="!hideTitle" class="date-title fake" :class="[_direction === 'left' && 'left', _direction === 'right' && 'right']">
       {{ fakeDate }}
@@ -51,6 +51,9 @@ watch(date, () => {
 </template>
 
 <style scoped>
+.calender-header {
+  margin: 6px 6px 15px;
+}
 .date-title {
   width: 125px;
   display: flex;

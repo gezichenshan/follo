@@ -1,17 +1,35 @@
 <script setup lang="ts">
-const times = ref([{ id: 1, selected: false, time: '19:00' }, { id: 2, selected: false, time: '20:00' }])
-function handleSelect(item) {
-  console.log(1111, item)
-  times.value = times.value.map(t => ({ ...t, selected: item.id === t.id }))
+import type { TimeObj } from '@/model'
+
+interface Props {
+  availableTimes: TimeObj[]
 }
+const props = defineProps<Props>()
+const { availableTimes } = toRefs(props)
+
+const selectedTime = ref<TimeObj>()
+function handleSelect(item: TimeObj) {
+  selectedTime.value = item
+}
+const times = computed(() => {
+  return availableTimes.value.map(t => ({ ...t, selected: t.time === selectedTime.value?.time }))
+})
+
+watch(availableTimes, () => {
+  selectedTime.value = undefined
+})
 </script>
 
 <template>
-  <div style="width: 300px;">
+  <div class="time-picker">
     <UICalenderTimePickerTimeButton v-for="(item, i) in times" :key="i" :data="item" @select="handleSelect" />
   </div>
 </template>
 
 <style scoped>
-
+.time-picker {
+  position: relative;
+  width: 300px;
+  overflow: auto;
+}
 </style>
