@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { CalendarOutlined, FieldTimeOutlined, LinkOutlined } from '@ant-design/icons-vue'
+
 function toggleSideMenu() {
   const navigationContainer = document.querySelector('.navigation-container')
   if (navigationContainer) {
@@ -9,17 +11,17 @@ function toggleSideMenu() {
 const menus = [
   {
     title: '会议管理',
-    icon: 'LinkOutlined',
+    icon: LinkOutlined,
     path: '/event_types',
   },
   {
     title: '待处理事项',
-    icon: 'CalendarOutlined',
+    icon: CalendarOutlined,
     path: '/scheduled_events',
   },
   {
     title: '编辑工作时间',
-    icon: 'FieldTimeOutlined',
+    icon: FieldTimeOutlined,
     path: '/working_time',
   },
 ]
@@ -66,18 +68,10 @@ const route = useRoute()
       </div>
       <div class="section-menu">
         <template v-for="menu in menus" :key="menu.path">
-          <a class="menu-row" :class="[{ selected: route.path === menu.path }]" :href="menu.path">
-            <template v-if="menu.icon === 'LinkOutlined'">
-              <LinkOutlined />
-            </template>
-            <template v-if="menu.icon === 'CalendarOutlined'">
-              <CalendarOutlined />
-            </template>
-            <template v-if="menu.icon === 'FieldTimeOutlined'">
-              <FieldTimeOutlined />
-            </template>
+          <nuxt-link class="menu-row" :class="[{ selected: route.path === menu.path }]" :to="menu.path">
+            <component :is="menu.icon" />
             <span class="txt-menu-item">{{ menu.title }}</span>
-          </a>
+          </nuxt-link>
         </template>
       </div>
     </nav>

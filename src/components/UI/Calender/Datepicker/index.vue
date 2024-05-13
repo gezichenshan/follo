@@ -106,7 +106,7 @@ watch(date, () => {
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  padding: 0 20px;
+  padding: 0 10px;
 }
 .table {
   position: relative;
