@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import type { TimeObj } from '@/model'
+import dayjs from 'dayjs'
+import * as TimeUtil from '@/utils/time'
+import type { DayItem, TimeObj } from '@/model'
 
 interface Props {
   availableTimes: TimeObj[]
+  date?: DayItem
 }
 const props = defineProps<Props>()
-const { availableTimes } = toRefs(props)
+const { availableTimes, date } = toRefs(props)
+
+const dateTitle = computed(() => {
+  if (!date.value)
+    return
+  return `${TimeUtil.getFormatedDayFromDate(date.value?.date)}，${dayjs(date.value.date).format('MM月DD日')}`
+})
 
 const selectedTime = ref<TimeObj>()
 function handleSelect(item: TimeObj) {
@@ -22,6 +31,9 @@ watch(availableTimes, () => {
 
 <template>
   <div class="time-picker">
+    <div style="height: 30px;text-align: center;">
+      {{ dateTitle }}
+    </div>
     <UICalenderTimePickerTimeButton v-for="(item, i) in times" :key="i" :data="item" @select="handleSelect" />
   </div>
 </template>
@@ -31,5 +43,16 @@ watch(availableTimes, () => {
   position: relative;
   width: 300px;
   overflow: auto;
+  padding-right: 30px;
+  margin-right: 5px;
+}
+
+.time-picker::-webkit-scrollbar {
+  width: 8px;
+}
+
+.time-picker::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #666;
 }
 </style>

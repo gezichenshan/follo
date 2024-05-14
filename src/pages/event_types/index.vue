@@ -17,7 +17,7 @@
         </div>
         <div class="flex-column">
           <span>Jack</span>
-          <a href="/">https://follo.top/jooyyy</a>
+          <nuxt-link to="/jooyyy" />
         </div>
       </div>
       <div class="group-right">
@@ -40,7 +40,10 @@
         <div class="item-body">
           <h2>xxxxxx</h2>
           <p>30 分钟，1 对 1</p>
-          <a href="https://follo.top/jooyyy" target="_blank" style="padding-top: 8px;">页面</a>
+
+          <nuxt-link to="/jooyyy">
+            查看预约界面
+          </nuxt-link>
         </div>
         <div class="item-footer">
           <div class="">

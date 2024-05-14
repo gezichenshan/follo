@@ -13,7 +13,7 @@ const availableTimes = computed(() => {
     time: item,
   }))
 })
-
+const selectedDate = ref<DayItem>()
 const loading = ref(false)
 
 // mock
@@ -26,19 +26,19 @@ function refetchAvailableTimes() {
 }
 
 function handleDateSelect(date: DayItem) {
-  console.log('date', date)
   refetchAvailableTimes()
+  selectedDate.value = date
 }
 </script>
 
 <template>
   <div class="calender-box flex">
     <div class="left-box">
-      <h1>Gezichenshan YU</h1>
+      <h2>Gezichenshan YU</h2>
     </div>
     <div class="right-box relative">
       <UICalenderDatepicker @select="handleDateSelect" />
-      <UICalenderTimePicker :available-times="availableTimes" />
+      <UICalenderTimePicker :available-times="availableTimes" :date="selectedDate" />
       <div v-if="loading" class="loading-mask absolute inset-0">
         <a-spin class="spinner" />
       </div>
@@ -59,13 +59,14 @@ function handleDateSelect(date: DayItem) {
   min-width: 300px;
   border-right: 1px solid var(--text-color-level3, rgba(26, 26, 26, 0.1));
   transition: all 0.22s ease-out;
+  padding: 20px;
 }
 .right-box {
   display: flex;
   flex: 1 1 50%;
   width: 50%;
   transition: all 0.22s ease-out;
-  padding: 20px;
+  padding-top: 20px;
 }
 .loading-mask {
   display: flex;

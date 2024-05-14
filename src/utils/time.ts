@@ -63,3 +63,16 @@ export function getDayFromDate(date: string) {
     return
   return dayjs(date).format('D')
 }
+
+/**
+ * 获取YYYY-MM-DD中的D并变成星期几
+ * @param date h
+ * @returns string
+ */
+export function getFormatedDayFromDate(date?: string) {
+  const dayMap = ['日', '一', '二', '三', '四', '五', '六']
+  if (!date)
+    return
+
+  return `星期${dayMap[dayjs(date).day()]}`
+}
