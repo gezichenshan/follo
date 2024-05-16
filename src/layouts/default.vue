@@ -7,9 +7,9 @@ export default {
 
 <template>
   <div class="layout-container">
-    <dashboard-side-menu />
+    <side-menu />
     <div class="dashboard">
-      <dashboard-header-menu />
+      <header-menu />
       <slot />
     </div>
   </div>

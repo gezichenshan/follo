@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CalendarOutlined, FieldTimeOutlined, LinkOutlined } from '@ant-design/icons-vue'
+import { CalendarOutlined, FieldTimeOutlined, LinkOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 function toggleSideMenu() {
   const navigationContainer = document.querySelector('.navigation-container')
@@ -10,11 +10,6 @@ function toggleSideMenu() {
 
 const menus = [
   {
-    title: '会议管理',
-    icon: LinkOutlined,
-    path: '/event_types',
-  },
-  {
     title: '待处理事项',
     icon: CalendarOutlined,
     path: '/scheduled_events',
@@ -23,6 +18,16 @@ const menus = [
     title: '编辑工作时间',
     icon: FieldTimeOutlined,
     path: '/working_time',
+  },
+  {
+    title: '个人主页',
+    icon: UserOutlined,
+    path: '/space',
+  },
+  {
+    title: '会议管理',
+    icon: LinkOutlined,
+    path: '/event_types',
   },
 ]
 
