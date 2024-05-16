@@ -6,10 +6,13 @@ interface Props {
 }
 const props = defineProps<Props>()
 
-const emits = defineEmits(['select'])
+const emits = defineEmits(['select', 'next'])
 const { data } = toRefs(props)
 function handleSelect() {
   emits('select', data.value)
+}
+function handleNext() {
+  emits('next', data.value)
 }
 </script>
 
@@ -22,7 +25,7 @@ function handleSelect() {
         </div>
       </div>
     </button>
-    <button v-if="data.selected" class="time-btn btn next cursor-pointer" :class="[data.selected && 'selected']">
+    <button v-if="data.selected" class="time-btn btn next cursor-pointer" :class="[data.selected && 'selected']" @click="handleNext">
       <div class="btn-innner ">
         <div class="j1sPElHG5fkgLNJPo_Q_">
           下一步

@@ -6,15 +6,15 @@ import { getTableDateTdArr } from '@/utils/calender'
 import type { DayItem } from '@/model'
 import * as TimeUtil from '@/utils/time'
 
-const emits = defineEmits(['select'])
+const emits = defineEmits(['change', 'monthChange'])
 
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
-const date = ref(dayjs().format('YYYY-MM'))
+const dateMonth = ref(dayjs().format('YYYY-MM'))
 
 const selectedDay = ref<DayItem>()
 
-const tableData = ref(getTableDateTdArr(date.value))
+const tableData = ref(getTableDateTdArr(dateMonth.value))
 
 /**
  * TODO 这个方法应该由外部传进来，进行判断那一天是用户可选的
@@ -50,16 +50,16 @@ const tableVisible = ref(true)
 
 function handleMonChange(type: 'left' | 'right') {
   if (type === 'left') {
-    const datePrevMonth = dayjs(date.value).subtract(1, 'M').format('YYYY-MM')
-    date.value = datePrevMonth
+    const datePrevMonth = dayjs(dateMonth.value).subtract(1, 'M').format('YYYY-MM')
+    dateMonth.value = datePrevMonth
     tableData.value = getTableDateTdArr(datePrevMonth)
-    fakeTableData.value = getTableDateTdArr(dayjs(date.value).add(1, 'M').format('YYYY-MM'))
+    fakeTableData.value = getTableDateTdArr(dayjs(dateMonth.value).add(1, 'M').format('YYYY-MM'))
   }
   if (type === 'right') {
-    const dateNextMonth = dayjs(date.value).add(1, 'M').format('YYYY-MM')
-    date.value = dateNextMonth
+    const dateNextMonth = dayjs(dateMonth.value).add(1, 'M').format('YYYY-MM')
+    dateMonth.value = dateNextMonth
     tableData.value = getTableDateTdArr(dateNextMonth)
-    fakeTableData.value = getTableDateTdArr(dayjs(date.value).subtract(1, 'M').format('YYYY-MM'))
+    fakeTableData.value = getTableDateTdArr(dayjs(dateMonth.value).subtract(1, 'M').format('YYYY-MM'))
   }
   swipeDirection.value = type
 }
@@ -67,12 +67,11 @@ function handleMonChange(type: 'left' | 'right') {
 function handleDateSelect(data: DayItem) {
   selectedDay.value = data
 }
+watch(dateMonth, () => {
+  emits('monthChange', dateMonth.value)
+}, { immediate: true })
 
-watch(selectedDay, () => {
-  emits('select', selectedDay.value)
-})
-
-watch(date, () => {
+watch(dateMonth, () => {
   if (swipeDirection.value === undefined)
     return
   // 隐藏，生成动画
@@ -81,11 +80,14 @@ watch(date, () => {
     tableVisible.value = true
   })
 })
+watch(selectedDay, () => {
+  emits('change', selectedDay.value)
+})
 </script>
 
 <template>
   <div class="calender-ctn">
-    <UICalenderDatepickerTableHeader :date="date" @change="handleMonChange" />
+    <UICalenderDatepickerTableHeader :date="dateMonth" @change="handleMonChange" />
     <table class="table">
       <thead>
         <tr>

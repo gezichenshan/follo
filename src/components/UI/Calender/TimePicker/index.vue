@@ -8,8 +8,8 @@ interface Props {
   date?: DayItem
 }
 const props = defineProps<Props>()
+const emits = defineEmits(['change', 'submit'])
 const { availableTimes, date } = toRefs(props)
-
 const dateTitle = computed(() => {
   if (!date.value)
     return
@@ -20,31 +20,43 @@ const selectedTime = ref<TimeObj>()
 function handleSelect(item: TimeObj) {
   selectedTime.value = item
 }
-const times = computed(() => {
+const timesByAvailableTimes = computed(() => {
   return availableTimes.value.map(t => ({ ...t, selected: t.time === selectedTime.value?.time }))
 })
 
 watch(availableTimes, () => {
   selectedTime.value = undefined
 })
+
+watch(selectedTime, () => {
+  emits('change', selectedTime.value)
+})
 </script>
 
 <template>
-  <div class="time-picker">
-    <div style="height: 30px;text-align: center;">
+  <div class="time-picker-ctn">
+    <div style="height: 30px;">
       {{ dateTitle }}
     </div>
-    <UICalenderTimePickerTimeButton v-for="(item, i) in times" :key="i" :data="item" @select="handleSelect" />
+    <div class="time-list">
+      <UICalenderTimePickerTimeButton v-for="(item, i) in timesByAvailableTimes" :key="i" :data="item" @select="handleSelect" @next="() => emits('submit', selectedTime)" />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.time-picker {
+.time-picker-ctn {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  width: 300px;
-  overflow: auto;
-  padding-right: 30px;
+  width: 234px;
   margin-right: 5px;
+}
+
+.time-list {
+  flex: 1;
+  overflow: auto;
+  padding-right: 20px;
 }
 
 .time-picker::-webkit-scrollbar {
