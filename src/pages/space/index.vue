@@ -1,4 +1,9 @@
 <script setup lang="ts">
+const router = useRouter()
+
+function jumpTo(url: string) {
+  router.push(url)
+}
 </script>
 
 <template>
@@ -9,11 +14,13 @@
 
     <div class="main-body">
       <div class="body-left">
-        <img class="img-avatar" src="https://avatars.githubusercontent.com/u/30552622?v=4" alt="">
+        <div class="avatar-wrap">
+          <img class="img-avatar" src="https://liuxue.xdf.cn/blog/maoyuanyuan4/P020230614627767199392.jpg" alt="">
+        </div>
         <div class="profile-container">
-          <span class="txt-spacename">周毅 · 叁镜教育</span>
-          <span class="txt-workingyear">工作年限：5年</span>
-          <span class="txt-spacepath">https://follo.top/jooyyy</span>
+          <span class="txt-spacename">Jason · 叁镜教育</span>
+          <span class="txt-workingyear">工作年限：10年</span>
+          <span class="txt-spacepath">https://follo.top/jason</span>
           <div class="tags-container">
             <div class="txt-tag">
               北美留学
@@ -88,7 +95,7 @@
         <div class="hi-container">
           <div class="title-wrap">
             <span>jooyyy/README.md</span>
-            <a-button type="ghost">
+            <a-button type="ghost" @click="jumpTo('/settings/profile')">
               <EditOutlined />
             </a-button>
           </div>
@@ -267,13 +274,26 @@
 
   .body-left {
     grid-column: 1;
-    width: 260px;
+    width: 296px;
     height: 100%;
     background-color: #fff;
   }
 
-  .img-avatar {
+  .avatar-wrap {
+    width: 100%;
+    height: 296px;
+    overflow: hidden;
     border-radius: 50%;
+
+    .img-avatar {
+      width: 100%;
+      border: 1px solid #d0d7de;
+      display: inline-block;
+      flex-shrink: 0;
+      line-height: 1;
+      overflow: hidden;
+      vertical-align: middle;
+    }
   }
 
   .profile-container {
