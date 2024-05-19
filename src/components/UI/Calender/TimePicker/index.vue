@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import * as TimeUtil from '@/utils/time'
-import type { DayItem, TimeObj } from '@/model'
+import type { DateItem, TimeObj } from '@/model'
 
 interface Props {
   availableTimes: TimeObj[]
-  date?: DayItem
+  date?: DateItem
 }
 const props = defineProps<Props>()
 const emits = defineEmits(['change', 'submit'])

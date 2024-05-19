@@ -1,11 +1,11 @@
 import _ from 'lodash'
 import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
-import type { DayItem } from '@/model'
+import type { DateItem } from '@/model'
 import * as TimeUtil from '@/utils/time'
 
 const dateStringFormat = 'YYYY-MM-DD'
-export function getTableDateTdArr(date: string | Dayjs): DayItem[][] {
+export function getTableDateTdArr(date: string | Dayjs): DateItem[][] {
   const startDateOfMonth = TimeUtil.getMonthStartDateOfGivenDate(date)
   const startDayOfMonth = TimeUtil.getMonthStartWorkingDayOfGivenDate(date)
   const endDateOfMonth = TimeUtil.getMonthEndDateOfGivenDate(date)

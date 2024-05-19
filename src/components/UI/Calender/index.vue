@@ -2,9 +2,17 @@
 import { h } from 'vue'
 import dayjs from 'dayjs'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
-import type { DayItem, TimeObj } from '@/model'
+import type { DateItem, TimeObj } from '@/model'
 
+interface Props {
+  month?: string
+  date?: string
+  time?: string
+}
+const props = defineProps<Props>()
 const emits = defineEmits(['update:month', 'update:date', 'update:time'])
+
+const { month: propMonth, date: propDate, time: propTime } = toRefs(props)
 
 const radomTimeLength = ref(Math.floor(Math.random() * 23))
 
@@ -18,7 +26,7 @@ const availableTimes = computed(() => {
   }))
 })
 const selectedMonth = ref<string>()
-const selectedDate = ref<DayItem>()
+const selectedDate = ref<DateItem>()
 const selectedTime = ref<TimeObj>()
 const loading = ref(false)
 const step = ref(1)
@@ -32,7 +40,7 @@ function refetchAvailableTimes() {
   }, 200)
 }
 
-function handleDateChange(date: DayItem) {
+function handleDateChange(date: DateItem) {
   selectedDate.value = date
 }
 
@@ -45,7 +53,6 @@ function handleMonthChange(month: string) {
 }
 
 function handleNextStep() {
-  console.log(2222)
   step.value = 2
 }
 
@@ -55,11 +62,19 @@ watch(selectedMonth, () => {
 
 watch(selectedDate, () => {
   refetchAvailableTimes()
-  emits('update:date', selectedDate.value)
+  emits('update:date', selectedDate.value?.date)
 })
 
 watch(selectedTime, () => {
-  emits('update:time', selectedTime.value)
+  emits('update:time', selectedTime.value?.time)
+})
+
+const datePickerInitialData = computed(() => {
+  return {
+    month: propMonth.value,
+    date: propDate.value,
+    time: propTime.value,
+  }
 })
 </script>
 
@@ -75,7 +90,7 @@ watch(selectedTime, () => {
         {{ step === 2 ? '请填写基本信息' : '请选择日期和时间' }}
       </h2>
       <div v-if="step === 1" class="right-box-content">
-        <UICalenderDatepicker @change="handleDateChange" @month-change="handleMonthChange" />
+        <UICalenderDatepicker :initial-data="datePickerInitialData" @change="handleDateChange" @month-change="handleMonthChange" />
         <UICalenderTimePicker v-if="selectedDate" class="flex-1" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
         <div v-if="loading" class="loading-mask absolute inset-0">
           <a-spin class="spinner" />

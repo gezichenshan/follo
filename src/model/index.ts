@@ -1,4 +1,4 @@
-export interface DayItem {
+export interface DateItem {
   date: string
   selected?: boolean
   available?: boolean

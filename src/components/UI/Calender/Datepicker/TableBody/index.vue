@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import type { DayItem } from '@/model'
+import type { DateItem } from '@/model'
 
 interface Props {
-  prevData: DayItem[][]
-  data: DayItem[][]
+  prevData: DateItem[][]
+  data: DateItem[][]
   direction?: 'left' | 'right'
-  noAnimation?: boolean
 }
 const props = defineProps<Props>()
 const emits = defineEmits(['select'])
 
 const { prevData, data, direction } = toRefs(props)
 
-function chooseDate(day: DayItem) {
+function chooseDate(day: DateItem) {
   emits('select', day)
 }
 </script>

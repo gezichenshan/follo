@@ -3,18 +3,26 @@ import { nextTick } from 'vue'
 
 import dayjs from 'dayjs'
 import { getTableDateTdArr } from '@/utils/calender'
-import type { DayItem } from '@/model'
+import type { DateItem } from '@/model'
 import * as TimeUtil from '@/utils/time'
 
+interface Props {
+  initialData?: {
+    month?: string
+    date?: string
+    time?: string
+  }
+}
+const props = defineProps<Props>()
 const emits = defineEmits(['change', 'monthChange'])
+
+const { initialData } = toRefs(props)
 
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
 const dateMonth = ref(dayjs().format('YYYY-MM'))
 
-const selectedDay = ref<DayItem>()
-
-const tableData = ref(getTableDateTdArr(dateMonth.value))
+const selectedDate = ref<DateItem>()
 
 /**
  * TODO 这个方法应该由外部传进来，进行判断那一天是用户可选的
@@ -30,12 +38,19 @@ function isDateAvailableJudger(date: string) {
   return false
 }
 
-const mockedTableData = computed<DayItem[][]>(() => {
+const swipeDirection = ref<'left' | 'right' >()
+const tableVisible = ref(true)
+
+const tableData = computed(() => {
+  return getTableDateTdArr(dateMonth.value)
+})
+
+const mockedTableData = computed<DateItem[][]>(() => {
   return tableData.value.map((week) => {
     return week.map((item) => {
       return {
         date: item.date,
-        selected: selectedDay.value?.date === item.date,
+        selected: selectedDate.value?.date === item.date,
         available: isDateAvailableJudger(item.date),
         isToday: item.isToday,
       }
@@ -43,29 +58,29 @@ const mockedTableData = computed<DayItem[][]>(() => {
   })
 })
 
-const fakeTableData = ref<DayItem[][]>([[]])
-
-const swipeDirection = ref<'left' | 'right' >()
-const tableVisible = ref(true)
+const fakeTableData = computed<DateItem[][]>(() => {
+  if (!swipeDirection.value)
+    return []
+  if (swipeDirection.value === 'left') {
+    return getTableDateTdArr(dayjs(dateMonth.value).add(1, 'M').format('YYYY-MM'))
+  }
+  return getTableDateTdArr(dayjs(dateMonth.value).subtract(1, 'M').format('YYYY-MM'))
+})
 
 function handleMonChange(type: 'left' | 'right') {
+  swipeDirection.value = type
   if (type === 'left') {
     const datePrevMonth = dayjs(dateMonth.value).subtract(1, 'M').format('YYYY-MM')
     dateMonth.value = datePrevMonth
-    tableData.value = getTableDateTdArr(datePrevMonth)
-    fakeTableData.value = getTableDateTdArr(dayjs(dateMonth.value).add(1, 'M').format('YYYY-MM'))
   }
   if (type === 'right') {
     const dateNextMonth = dayjs(dateMonth.value).add(1, 'M').format('YYYY-MM')
     dateMonth.value = dateNextMonth
-    tableData.value = getTableDateTdArr(dateNextMonth)
-    fakeTableData.value = getTableDateTdArr(dayjs(dateMonth.value).subtract(1, 'M').format('YYYY-MM'))
   }
-  swipeDirection.value = type
 }
 
-function handleDateSelect(data: DayItem) {
-  selectedDay.value = data
+function handleDateSelect(data: DateItem) {
+  selectedDate.value = data
 }
 watch(dateMonth, () => {
   emits('monthChange', dateMonth.value)
@@ -80,8 +95,29 @@ watch(dateMonth, () => {
     tableVisible.value = true
   })
 })
-watch(selectedDay, () => {
-  emits('change', selectedDay.value)
+
+/**
+ * 根据initialData设置时间
+ */
+watch(initialData, () => {
+  if (!initialData.value)
+    return
+  const { month, date } = initialData.value
+  if (month) {
+    // sele
+    dateMonth.value = month
+  }
+  if (date) {
+    selectedDate.value = {
+      date,
+      selected: true,
+      available: true,
+      isToday: false,
+    }
+  }
+})
+watch(selectedDate, () => {
+  emits('change', selectedDate.value)
 })
 </script>
 
