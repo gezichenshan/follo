@@ -20,14 +20,14 @@ function handleNext() {
   <div class="time-btn-wrap " @click="handleSelect">
     <button class="time-btn btn text cursor-pointer" :class="[data.selected && 'selected']">
       <div class="btn-innner ">
-        <div class="j1sPElHG5fkgLNJPo_Q_">
+        <div class="time-btn-text">
           {{ data.time }}
         </div>
       </div>
     </button>
     <button v-if="data.selected" class="time-btn btn next cursor-pointer" :class="[data.selected && 'selected']" @click="handleNext">
       <div class="btn-innner ">
-        <div class="j1sPElHG5fkgLNJPo_Q_">
+        <div class="time-btn-text">
           下一步
         </div>
       </div>
@@ -75,9 +75,6 @@ function handleNext() {
   width: 100%;
 }
 
-.btn-innner.EpkalPYkm2S0JNrW12se {
-  width: 45px;
-}
 .btn-innner {
   position: relative;
   margin-right: auto;
@@ -102,7 +99,7 @@ function handleNext() {
   background-color: var(--text-color-secondary-3, rgba(0, 102, 230, 1));
 }
 
-.j1sPElHG5fkgLNJPo_Q_ {
+.time-btn-text {
   line-height: 10px;
 }
 </style>

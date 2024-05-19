@@ -20,6 +20,8 @@ watch(time, () => {
 <template>
   <div class="booking-page">
     <UICalender v-model:date="date" v-model:time="time" v-model:month="month" />
+
+    <!-- <UICalenderDatepicker @change="handleDateChange" @month-change="handleMonthChange" /> -->
   </div>
 </template>
 
@@ -27,10 +29,6 @@ watch(time, () => {
 .booking-page {
   display: flex;
   justify-content: center;
-  flex: 1 1 auto;
-  padding-right: 5%;
-  padding-left: 5%;
   margin-top: 66px;
-  margin-bottom: 30px;
 }
 </style>

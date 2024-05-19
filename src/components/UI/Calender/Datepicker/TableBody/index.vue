@@ -46,19 +46,11 @@ tbody.left {
 .fake-tbody {
   width: 100%;
   position: absolute;
-  top: 0;
-  top: 36px;
-}
-
-.fake-tbody tr {
-  display: flex;
-  margin: 8px 0;
-  justify-content: space-around;
 }
 
 .fake-tbody.right,
 .fake-tbody.left {
-  /* right: 20%; */
+  right: 10%;
 }
 
 .fake-tbody.right {

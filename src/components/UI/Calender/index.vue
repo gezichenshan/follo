@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { h } from 'vue'
 import dayjs from 'dayjs'
+import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import type { DayItem, TimeObj } from '@/model'
 
 const emits = defineEmits(['update:month', 'update:date', 'update:time'])
@@ -64,21 +66,23 @@ watch(selectedTime, () => {
 <template>
   <div class="calender-box flex">
     <div class="left-box">
+      <a-button v-if="step === 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" @click="() => step = 1" />
+
       <h2>Gezichenshan YU</h2>
     </div>
-    <div class="right-box">
+    <div class="right-box" :class="selectedDate && 'large'">
       <h2 class="picker-title">
-        请选择日期和时间
+        {{ step === 2 ? '请填写基本信息' : '请选择日期和时间' }}
       </h2>
       <div v-if="step === 1" class="right-box-content">
         <UICalenderDatepicker @change="handleDateChange" @month-change="handleMonthChange" />
-        <UICalenderTimePicker v-if="selectedDate" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
+        <UICalenderTimePicker v-if="selectedDate" class="flex-1" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
         <div v-if="loading" class="loading-mask absolute inset-0">
           <a-spin class="spinner" />
         </div>
       </div>
       <div v-if="step === 2" class="right-box-content step-2-wrap">
-        User input
+        <FormUserInfo />
       </div>
     </div>
   </div>
@@ -86,36 +90,35 @@ watch(selectedTime, () => {
 
 <style scoped>
 .calender-box {
-  height: 550px;
   border: 1px solid var(--text-color-level3, rgba(26, 26, 26, 0.1));
   border-radius: 8px;
   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
 }
 .left-box {
-  width: 35%;
   min-width: 300px;
   border-right: 1px solid var(--text-color-level3, rgba(26, 26, 26, 0.1));
   transition: all 0.22s ease-out;
-  padding: 20px;
 }
 .right-box {
   display: flex;
   flex-direction: column;
-  flex: 1 1 50%;
-  /* width: 50%; */
   transition: all 0.22s ease-out;
-  padding-top: 20px;
+  width: 455px;
+  max-height: 550px;
+  padding: 20px;
+}
+.right-box.large {
+  width: 760px;
 }
 .picker-title {
-  padding: 0 20px 0;
+  padding: 0 0 20px;
 }
 .right-box-content {
   display: flex;
-  flex: 1;
   overflow: hidden;
 }
 .right-box-content.step-2-wrap {
-  width: 651px;
+  /* width: 651px; */
 }
 .loading-mask {
   display: flex;

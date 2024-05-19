@@ -4,4 +4,16 @@ export default defineNuxtConfig({
   srcDir: 'src',
   modules: ['@unocss/nuxt', '@pinia/nuxt', '@ant-design-vue/nuxt'],
   css: ['@/assets/css/variables.css', '@/assets/css/reboot.css'],
+  app: {
+    head: {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1.0' },
+      ],
+      title: '叁镜选校系统',
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      ],
+    },
+  },
 })

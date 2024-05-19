@@ -46,25 +46,24 @@ watch(selectedTime, () => {
 
 <style scoped>
 .time-picker-ctn {
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: relative;
-  width: 234px;
-  margin-right: 5px;
 }
 
 .time-list {
-  flex: 1;
   overflow: auto;
+  scrollbar-gutter: stable;
   padding-right: 20px;
+  margin-top: 20px;
 }
 
-.time-picker::-webkit-scrollbar {
+.time-list::-webkit-scrollbar {
   width: 8px;
 }
 
-.time-picker::-webkit-scrollbar-thumb {
+.time-list::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #666;
+  background-color: #888;
 }
 </style>

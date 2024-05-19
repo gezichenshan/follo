@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
-import { h, nextTick } from 'vue'
-import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons-vue'
+import { nextTick } from 'vue'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons-vue'
 
 interface Props {
   date: string
@@ -39,14 +39,18 @@ watch(date, () => {
 
 <template>
   <div class="calender-header flex justify-center items-center relative">
-    <a-button type="primary" shape="circle" :icon="h(CaretLeftOutlined)" @click="() => handleChange('left')" />
+    <div class="arrow-btn-wrap" @click="() => handleChange('left')">
+      <LeftOutlined />
+    </div>
     <div v-if="!hideTitle" class="date-title fake" :class="[_direction === 'left' && 'left', _direction === 'right' && 'right']">
       {{ fakeDate }}
     </div>
     <div v-if="!hideTitle" class="date-title" :class="[_direction === 'left' && 'left', _direction === 'right' && 'right']">
       {{ date }}
     </div>
-    <a-button type="primary" shape="circle" :icon="h(CaretRightOutlined)" @click="() => handleChange('right')" />
+    <div class="arrow-btn-wrap" @click="() => handleChange('right')">
+      <RightOutlined />
+    </div>
   </div>
 </template>
 
@@ -80,6 +84,21 @@ watch(date, () => {
 
 .date-title.fake.left {
   animation: swipeToRight 0.35s ease-in-out normal both;
+}
+
+.arrow-btn-wrap {
+  width: 36px;
+  height: 36px;
+  background-color: var(--primary-color-level4);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color, rgb(0, 105, 255));
+  cursor: pointer;
+}
+.arrow-btn-wrap:hover {
+  background-color: var(--primary-color-level3, rgba(0, 105, 255, 0.15));
 }
 
 @keyframes swipeFromLeftToCenter {

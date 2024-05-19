@@ -103,7 +103,6 @@ watch(selectedDay, () => {
 
 <style scoped lang="css">
 .calender-ctn {
-  width: 412px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -112,8 +111,7 @@ watch(selectedDay, () => {
 }
 .table {
   position: relative;
-  border-spacing: 0 8px;
-  width: 100%;
+  border-spacing: 14px;
 }
 .table-head {
   font-size: 12px;
