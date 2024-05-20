@@ -19,7 +19,7 @@ const { initialData } = toRefs(props)
 
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
-const dateMonth = ref()
+const dateMonth = ref(dayjs().format('YYYY-MM'))
 
 const selectedDate = ref<DateItem>()
 
@@ -100,6 +100,8 @@ watch(dateMonth, () => {
  */
 
 onMounted(() => {
+  if (!initialData.value)
+    return
   const { month, date } = initialData.value
   if (month) {
     // sele
@@ -123,7 +125,7 @@ watch(selectedDate, () => {
 </script>
 
 <template>
-  <div class="calender-ctn">
+  <div class="datepicker-ctn">
     <UICalenderDatepickerTableHeader :date="dateMonth" @change="handleMonChange" />
     <table class="table">
       <thead>
@@ -139,19 +141,26 @@ watch(selectedDate, () => {
 </template>
 
 <style scoped lang="css">
-.calender-ctn {
+.datepicker-ctn {
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  padding: 0 10px;
 }
 .table {
+  width: 100%;
   position: relative;
   border-spacing: 14px;
+  table-layout: fixed;
 }
 .table-head {
   font-size: 12px;
   color: var(--text-color);
+}
+
+@media (max-width: 650px) {
+  .table {
+    border-spacing: 4px;
+  }
 }
 </style>

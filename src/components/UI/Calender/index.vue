@@ -81,21 +81,23 @@ const calenderInitialData = {
 </script>
 
 <template>
-  <div class="calender-box flex">
+  <div
+    class="booking-ctn calender-box" :class="[!selectedDate && 'only-with-datepicker']"
+  >
     <div class="left-box">
       <a-button v-if="step === 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" @click="() => step = 1" />
-
       <h2>Gezichenshan YU</h2>
     </div>
     <div class="right-box" :class="selectedDate && 'large'">
       <h2 class="picker-title">
         {{ step === 2 ? '请填写基本信息' : '请选择日期和时间' }}
       </h2>
-      <div v-if="step === 1" class="right-box-content">
+      <div v-if="step === 1" class="right-box-content" :class="[!selectedDate && 'only-with-datepicker']">
         <UICalenderDatepicker
-          :initial-data="calenderInitialData" @change="handleDateChange" @month-change="handleMonthChange"
+          :initial-data="calenderInitialData" class="datepicker-outter-wrap" :class="[!selectedDate && 'only-with-datepicker']" @change="handleDateChange"
+          @month-change="handleMonthChange"
         />
-        <UICalenderTimePicker v-if="selectedDate" class="flex-1" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
+        <UICalenderTimePicker v-if="selectedDate" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
         <div v-if="loading" class="loading-mask absolute inset-0">
           <a-spin class="spinner" />
         </div>
@@ -108,10 +110,26 @@ const calenderInitialData = {
 </template>
 
 <style scoped>
+.booking-ctn {
+  width: 95%;
+  transition: all 0.22s ease-out;
+}
+.booking-ctn {
+  max-width: 1060px;
+}
+.booking-ctn.only-with-datepicker {
+  max-width: 800px;
+}
+.booking-ctn.only-with-datepicker .left-box,
+.right-box {
+  width: 50%;
+}
 .calender-box {
+  display: flex;
   border: 1px solid var(--text-color-level3, rgba(26, 26, 26, 0.1));
   border-radius: 8px;
   box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
+  max-width: 1060px;
 }
 .left-box {
   min-width: 300px;
@@ -120,14 +138,11 @@ const calenderInitialData = {
 }
 .right-box {
   display: flex;
+  flex: 1;
   flex-direction: column;
   transition: all 0.22s ease-out;
-  width: 455px;
   max-height: 550px;
   padding: 20px;
-}
-.right-box.large {
-  width: 760px;
 }
 .picker-title {
   padding: 0 0 20px;
@@ -135,6 +150,11 @@ const calenderInitialData = {
 .right-box-content {
   display: flex;
   overflow: hidden;
+}
+
+.right-box-content.only-with-datepicker {
+  max-width: 400px;
+  margin: 0 auto;
 }
 .right-box-content.step-2-wrap {
   /* width: 651px; */
@@ -147,5 +167,37 @@ const calenderInitialData = {
 }
 .loading-mask .spinner {
   transform: translateY(-50px);
+}
+
+.datepicker-outter-wrap {
+  width: 60%;
+}
+.datepicker-outter-wrap.only-with-datepicker {
+  width: 100%;
+}
+.timepicker-outter-wrap {
+  width: 40%;
+}
+
+@media (max-width: 1000px) {
+  .booking-ctn,
+  .booking-ctn.only-with-datepicker {
+    max-width: 680px;
+  }
+
+  .booking-ctn.only-with-datepicker .left-box,
+  .right-box {
+    width: 100%;
+  }
+  .calender-box {
+    display: block;
+    /* max-width: 720px; */
+  }
+}
+
+@media (max-width: 650px) {
+  .right-box-content {
+    flex-direction: column;
+  }
 }
 </style>

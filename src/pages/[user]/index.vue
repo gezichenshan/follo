@@ -37,7 +37,7 @@ onMounted(() => {
 
 <template>
   <div class="booking-page">
-    <UICalender v-model:date="date" v-model:time="time" v-model:month="month" :initial-data="calenderInitialData" />
+    <UICalender v-model:date="date" v-model:time="time" v-model:month="month" :initial-data="calenderInitialData" class="booking-ctn" />
 
     <!-- <UICalenderDatepicker @change="handleDateChange" @month-change="handleMonthChange" /> -->
   </div>
