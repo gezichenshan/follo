@@ -61,6 +61,27 @@ function handleNextStep() {
   step.value = 2
 }
 
+function clearDate() {
+  selectedDate.value = undefined
+}
+
+function clearTime() {
+  selectedTime.value = undefined
+}
+
+function backToSmallDeviceDateSelectStep() {
+  clearTime()
+  clearDate()
+}
+
+function backToStepBeforeUserInfo() {
+  clearTime()
+  toStep1()
+}
+function toStep1() {
+  step.value = 1
+}
+
 watch(selectedMonth, () => {
   emits('update:month', selectedMonth.value)
 })
@@ -85,7 +106,10 @@ const calenderInitialData = {
     class="booking-ctn calender-box" :class="[!selectedDate && 'only-with-datepicker']"
   >
     <div class="left-box">
-      <a-button v-if="step === 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" @click="() => step = 1" />
+      <!-- 为返回到填写User Info的前一步准备的btn -->
+      <a-button v-if="step === 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" @click="backToStepBeforeUserInfo" />
+      <!-- 为小屏幕上返回到选择时间的前一步准备的btn -->
+      <a-button v-if="step !== 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" class="small-device-back-btn" :class="[!selectedDate && 'only-with-datepicker']" @click="backToSmallDeviceDateSelectStep" />
       <h2>Gezichenshan YU</h2>
     </div>
     <div class="right-box" :class="selectedDate && 'large'">
@@ -179,6 +203,10 @@ const calenderInitialData = {
   width: 40%;
 }
 
+.small-device-back-btn {
+  display: none;
+}
+
 @media (max-width: 1000px) {
   .booking-ctn,
   .booking-ctn.only-with-datepicker {
@@ -191,13 +219,31 @@ const calenderInitialData = {
   }
   .calender-box {
     display: block;
-    /* max-width: 720px; */
   }
 }
 
 @media (max-width: 650px) {
+  .right-box {
+    min-height: 600px;
+  }
   .right-box-content {
     flex-direction: column;
+  }
+  .datepicker-outter-wrap {
+    display: none;
+  }
+  .datepicker-outter-wrap.only-with-datepicker {
+    display: block;
+  }
+  .small-device-back-btn.only-with-datepicker {
+    display: none;
+  }
+  .small-device-back-btn {
+    display: block;
+  }
+  .timepicker-outter-wrap {
+    width: 100%;
+    overflow: auto;
   }
 }
 </style>

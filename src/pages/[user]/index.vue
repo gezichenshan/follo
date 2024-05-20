@@ -49,4 +49,9 @@ onMounted(() => {
   justify-content: center;
   margin-top: 66px;
 }
+@media (max-width: 650px) {
+  .booking-page {
+    margin-top: 10px;
+  }
+}
 </style>

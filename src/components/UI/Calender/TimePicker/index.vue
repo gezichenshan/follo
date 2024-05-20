@@ -54,7 +54,6 @@ watch(selectedTime, () => {
 .time-list {
   overflow: auto;
   scrollbar-gutter: stable;
-  padding-right: 20px;
   margin-top: 20px;
 }
 
