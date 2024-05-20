@@ -8,11 +8,16 @@ interface Props {
   month?: string
   date?: string
   time?: string
+  initialData?: {
+    month: string
+    date: string
+    time: string
+  }
 }
 const props = defineProps<Props>()
 const emits = defineEmits(['update:month', 'update:date', 'update:time'])
 
-const { month: propMonth, date: propDate, time: propTime } = toRefs(props)
+const { initialData } = toRefs(props)
 
 const radomTimeLength = ref(Math.floor(Math.random() * 23))
 
@@ -69,13 +74,10 @@ watch(selectedTime, () => {
   emits('update:time', selectedTime.value?.time)
 })
 
-const datePickerInitialData = computed(() => {
-  return {
-    month: propMonth.value,
-    date: propDate.value,
-    time: propTime.value,
-  }
-})
+const calenderInitialData = {
+  month: initialData.value?.month,
+  date: initialData.value?.date,
+}
 </script>
 
 <template>
@@ -90,7 +92,9 @@ const datePickerInitialData = computed(() => {
         {{ step === 2 ? '请填写基本信息' : '请选择日期和时间' }}
       </h2>
       <div v-if="step === 1" class="right-box-content">
-        <UICalenderDatepicker :initial-data="datePickerInitialData" @change="handleDateChange" @month-change="handleMonthChange" />
+        <UICalenderDatepicker
+          :initial-data="calenderInitialData" @change="handleDateChange" @month-change="handleMonthChange"
+        />
         <UICalenderTimePicker v-if="selectedDate" class="flex-1" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
         <div v-if="loading" class="loading-mask absolute inset-0">
           <a-spin class="spinner" />

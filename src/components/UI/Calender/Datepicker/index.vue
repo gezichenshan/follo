@@ -7,10 +7,9 @@ import type { DateItem } from '@/model'
 import * as TimeUtil from '@/utils/time'
 
 interface Props {
-  initialData?: {
+  initialData: {
     month?: string
     date?: string
-    time?: string
   }
 }
 const props = defineProps<Props>()
@@ -20,7 +19,7 @@ const { initialData } = toRefs(props)
 
 const DaysTableHead = ['一', '二', '三', '四', '五', '六', '日'].map(s => `星期${s}`)
 
-const dateMonth = ref(dayjs().format('YYYY-MM'))
+const dateMonth = ref()
 
 const selectedDate = ref<DateItem>()
 
@@ -99,13 +98,14 @@ watch(dateMonth, () => {
 /**
  * 根据initialData设置时间
  */
-watch(initialData, () => {
-  if (!initialData.value)
-    return
+
+onMounted(() => {
   const { month, date } = initialData.value
   if (month) {
     // sele
     dateMonth.value = month
+  } else {
+    dateMonth.value = dayjs().format('YYYY-MM')
   }
   if (date) {
     selectedDate.value = {
@@ -116,6 +116,7 @@ watch(initialData, () => {
     }
   }
 })
+
 watch(selectedDate, () => {
   emits('change', selectedDate.value)
 })

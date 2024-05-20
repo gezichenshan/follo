@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import _ from 'lodash'
+// import _ from 'lodash'
 
 definePageMeta({ layout: 'booking' })
 const month = ref<string>()
@@ -8,17 +8,22 @@ const time = ref<string>()
 const route = useRoute()
 const router = useRouter()
 
-function omitUndefineValueInAObj(obj: { [key: string]: string | undefined }) {
-  const undefinedValueKeys = Object.keys(obj).filter((key) => {
-    return obj[key] === undefined
-  })
-  return _.omit(obj, undefinedValueKeys)
-}
+// function omitUndefineValueInAObj(obj: { [key: string]: string | undefined }) {
+//   const undefinedValueKeys = Object.keys(obj).filter((key) => {
+//     return obj[key] === undefined
+//   })
+//   return _.omit(obj, undefinedValueKeys)
+// }
 
+const calenderInitialData = {
+  month: route.query.month as string,
+  date: route.query.date as string,
+  time: route.query.time as string,
+}
 watch(() => [month, date, time], () => {
   router.push({
     path: route.path,
-    query: omitUndefineValueInAObj({ month: month.value, date: date.value, time: time.value }),
+    query: { month: month.value, date: date.value, time: time.value },
   })
 }, { deep: true })
 
@@ -32,7 +37,7 @@ onMounted(() => {
 
 <template>
   <div class="booking-page">
-    <UICalender v-model:date="date" v-model:time="time" v-model:month="month" />
+    <UICalender v-model:date="date" v-model:time="time" v-model:month="month" :initial-data="calenderInitialData" />
 
     <!-- <UICalenderDatepicker @change="handleDateChange" @month-change="handleMonthChange" /> -->
   </div>
