@@ -21,27 +21,15 @@ const emits = defineEmits(['update:month', 'update:date', 'update:time'])
 
 const { allDates: propDates, allDatesInSelectedDateMonth: propsDatesInSelectedDateMonth, isLoading, initialData } = toRefs(props)
 
-const radomTimeLength = ref(Math.floor(Math.random() * 23))
-
 const selectedMonth = ref<string>()
 const selectedDate = ref<DateItem>()
 const selectedTime = ref<TimeObj>()
-const loading = ref(false)
 const step = ref(1)
 
 const availableTimes = computed(() => {
   const match = propsDatesInSelectedDateMonth.value.find(_pdate => _pdate.date === selectedDate.value?.date)
   return match?.spots || []
 })
-
-// mock
-function refetchAvailableTimes() {
-  loading.value = true
-  setTimeout(() => {
-    radomTimeLength.value = Math.floor(Math.random() * 23)
-    loading.value = false
-  }, 200)
-}
 
 function handleDateChange(date: DateItem) {
   selectedDate.value = date
@@ -85,7 +73,6 @@ watch(selectedMonth, () => {
 })
 
 watch(selectedDate, () => {
-  refetchAvailableTimes()
   emits('update:date', selectedDate.value?.date)
 })
 

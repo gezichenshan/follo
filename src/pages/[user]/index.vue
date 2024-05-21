@@ -11,12 +11,6 @@ const time = ref<string>()
 const route = useRoute()
 const router = useRouter()
 
-// function omitUndefineValueInAObj(obj: { [key: string]: string | undefined }) {
-//   const undefinedValueKeys = Object.keys(obj).filter((key) => {
-//     return obj[key] === undefined
-//   })
-//   return _.omit(obj, undefinedValueKeys)
-// }
 const apiEnabled = computed(() => {
   return !!month.value
 })
@@ -50,11 +44,18 @@ const { isLoading, data: serverDateRangeData } = useQuery({
   enabled: apiEnabled,
 })
 
+const datesInSelectedDateMonthApiEnabled = computed(() => {
+  return !!date.value
+})
 const { data: serverDateRangeInSelectedDateMonth } = useQuery({
   queryKey: ['dates-in-selected-date-month', date],
   queryFn: () => getAvailableDates({ event_type_id: '1', range_start: monthInSelectedDateStartDate.value, range_end: monthInSelectedDateEndDate.value }), // Use $fetch with your api routes to get typesafety
-  enabled: apiEnabled,
+  enabled: datesInSelectedDateMonthApiEnabled,
 })
+
+function back() {
+  router.go(-1)
+}
 
 const calenderInitialData = {
   month: route.query.month as string,
@@ -63,7 +64,7 @@ const calenderInitialData = {
 }
 
 watch(() => [month, date, time], () => {
-  router.push({
+  router.replace({
     path: route.path,
     query: { month: month.value, date: date.value, time: time.value },
   })
@@ -72,7 +73,7 @@ watch(() => [month, date, time], () => {
 const allDates = computed<DateItem[]>(() => {
   if (!serverDateRangeData.value)
     return []
-  return serverDateRangeData.value.days.map((sDate) => {
+  return serverDateRangeData.value.days?.map((sDate) => {
     return {
       date: sDate.date,
       spots: sDate.spots ? sDate.spots.map(sTime => ({ time: sTime.start_time.split(' ')[1], available: sTime.status === 'available', invitees_remaining: sTime.InviteesRemaining })) : [],
@@ -83,7 +84,7 @@ const allDates = computed<DateItem[]>(() => {
 const allDatesInSelectedDateMonth = computed<DateItem[]>(() => {
   if (!serverDateRangeInSelectedDateMonth.value)
     return []
-  return serverDateRangeInSelectedDateMonth.value.days.map((sDate) => {
+  return serverDateRangeInSelectedDateMonth.value.days?.map((sDate) => {
     return {
       date: sDate.date,
       spots: sDate.spots ? sDate.spots.map(sTime => ({ time: sTime.start_time.split(' ')[1], available: sTime.status === 'available', invitees_remaining: sTime.InviteesRemaining })) : [],
@@ -108,8 +109,10 @@ onMounted(() => {
 
 <template>
   <div class="booking-page">
+    <div class="back-btn" @click="back">
+      <ArrowLeftOutlined />
+    </div>
     <UICalender v-model:date="date" v-model:time="time" v-model:month="month" :is-loading="isLoading" :all-dates-in-selected-date-month="allDatesInSelectedDateMonth" :all-dates="allDates" :initial-data="calenderInitialData" class="booking-ctn" />
-    <!-- <UICalenderDatepicker @change="handleDateChange" @month-change="handleMonthChange" /> -->
   </div>
 </template>
 
@@ -118,6 +121,24 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   margin-top: 66px;
+}
+.back-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background-color: var(--primary-color-level4);
+  font-size: 12px;
+  text-align: center;
+  cursor: pointer;
+}
+.back-btn:hover {
+  background-color: var(--primary-color-level3);
 }
 @media (max-width: 650px) {
   .booking-page {
