@@ -2,6 +2,20 @@ import type { Dayjs } from 'dayjs'
 import dayjs from 'dayjs'
 
 /**
+ * 获取传入时间当月并且不早于Date.now()的日期
+ * @param date
+ * @returns string
+ */
+export function getMonthStartAvailableDateOfGivenDate(date: string | Dayjs) {
+  const theMonthFirstDay = dayjs(date).startOf('month')
+
+  const now = dayjs()
+  if (theMonthFirstDay.isBefore(now)) {
+    return now.format('YYYY-MM-DD')
+  }
+  return theMonthFirstDay.format('YYYY-MM-DD')
+}
+/**
  * 获取传入带时间该月第一天的日期
  * @param date
  * @returns string

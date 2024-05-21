@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { h } from 'vue'
-import dayjs from 'dayjs'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import type { DateItem, TimeObj } from '@/model'
 
 interface Props {
+  allDates: DateItem[]
+  allDatesInSelectedDateMonth: DateItem[]// 选中日期该月的dates数据
+  isLoading: boolean
   month?: string
   date?: string
   time?: string
@@ -17,24 +19,20 @@ interface Props {
 const props = defineProps<Props>()
 const emits = defineEmits(['update:month', 'update:date', 'update:time'])
 
-const { initialData } = toRefs(props)
+const { allDates: propDates, allDatesInSelectedDateMonth: propsDatesInSelectedDateMonth, isLoading, initialData } = toRefs(props)
 
 const radomTimeLength = ref(Math.floor(Math.random() * 23))
 
-const startDate = computed(() => dayjs().startOf('day').add(radomTimeLength.value, 'hour'))
-
-const availableTimes = computed(() => {
-  return Array.from({ length: 23 - radomTimeLength.value }).map((item, i) => dayjs(startDate.value).add(i, 'hour').format('HH:00')).map((item, i) => ({
-    id: i,
-    selected: false,
-    time: item,
-  }))
-})
 const selectedMonth = ref<string>()
 const selectedDate = ref<DateItem>()
 const selectedTime = ref<TimeObj>()
 const loading = ref(false)
 const step = ref(1)
+
+const availableTimes = computed(() => {
+  const match = propsDatesInSelectedDateMonth.value.find(_pdate => _pdate.date === selectedDate.value?.date)
+  return match?.spots || []
+})
 
 // mock
 function refetchAvailableTimes() {
@@ -118,11 +116,12 @@ const calenderInitialData = {
       </h2>
       <div v-if="step === 1" class="right-box-content" :class="[!selectedDate && 'only-with-datepicker']">
         <UICalenderDatepicker
+          :dates="propDates"
           :initial-data="calenderInitialData" class="datepicker-outter-wrap" :class="[!selectedDate && 'only-with-datepicker']" @change="handleDateChange"
           @month-change="handleMonthChange"
         />
         <UICalenderTimePicker v-if="selectedDate" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
-        <div v-if="loading" class="loading-mask absolute inset-0">
+        <div v-if="isLoading" class="loading-mask absolute inset-0">
           <a-spin class="spinner" />
         </div>
       </div>

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:follo": "npx nuxi dev --dotenv .env.local",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -12,7 +13,10 @@
     "lint": "lint-staged"
   },
   "dependencies": {
+    "@hebilicious/vue-query-nuxt": "^0.3.0",
     "@pinia/nuxt": "^0.5.1",
+    "@tanstack/vue-query": "^5.37.1",
+    "axios": "^1.7.0",
     "dayjs": "^1.11.11",
     "lodash": "^4.17.21",
     "nuxt": "^3.11.2",
