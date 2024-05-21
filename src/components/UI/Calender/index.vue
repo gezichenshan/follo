@@ -107,7 +107,7 @@ const calenderInitialData = {
           :initial-data="calenderInitialData" class="datepicker-outter-wrap" :class="[!selectedDate && 'only-with-datepicker']" @change="handleDateChange"
           @month-change="handleMonthChange"
         />
-        <UICalenderTimePicker v-if="selectedDate" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
+        <UICalenderTimePicker v-if="selectedDate" :is-loading="isLoading" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
         <div v-if="isLoading" class="loading-mask absolute inset-0">
           <a-spin class="spinner" />
         </div>
@@ -147,6 +147,7 @@ const calenderInitialData = {
   transition: all 0.22s ease-out;
 }
 .right-box {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;

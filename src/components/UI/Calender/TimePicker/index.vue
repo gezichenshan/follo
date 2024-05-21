@@ -6,10 +6,11 @@ import type { DateItem, TimeObj } from '@/model'
 interface Props {
   availableTimes: TimeObj[]
   date?: DateItem
+  isLoading: boolean
 }
 const props = defineProps<Props>()
 const emits = defineEmits(['change', 'submit'])
-const { availableTimes, date } = toRefs(props)
+const { availableTimes, date, isLoading } = toRefs(props)
 const dateTitle = computed(() => {
   if (!date.value)
     return
@@ -40,6 +41,9 @@ watch(selectedTime, () => {
     </div>
     <div class="time-list">
       <UICalenderTimePickerTimeButton v-for="(item, i) in timesByAvailableTimes" :key="i" :data="item" @select="handleSelect" @next="() => emits('submit', selectedTime)" />
+      <span v-if="!isLoading && timesByAvailableTimes.length === 0">
+        <a-empty description="无可供选择的时间" />
+      </span>
     </div>
   </div>
 </template>
