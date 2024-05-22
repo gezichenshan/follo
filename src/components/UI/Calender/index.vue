@@ -194,6 +194,13 @@ const calenderInitialData = {
   display: none;
 }
 
+@media (min-width: 1000px) {
+  .booking-ctn {
+    min-width: 900px;
+    max-width: 1060px;
+  }
+}
+
 @media (max-width: 1000px) {
   .booking-ctn,
   .booking-ctn.only-with-datepicker {
@@ -205,7 +212,7 @@ const calenderInitialData = {
     width: 100%;
   }
   .calender-box {
-    display: block;
+    flex-direction: column;
   }
 }
 

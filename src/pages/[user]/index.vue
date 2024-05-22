@@ -120,7 +120,11 @@ onMounted(() => {
 .booking-page {
   display: flex;
   justify-content: center;
+  flex: 1 1 auto;
+  padding-right: 5%;
+  padding-left: 5%;
   margin-top: 66px;
+  margin-bottom: 30px;
 }
 .back-btn {
   display: flex;

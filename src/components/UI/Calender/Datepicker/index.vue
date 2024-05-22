@@ -144,6 +144,7 @@ watch(selectedDate, () => {
   position: relative;
   border-spacing: 14px;
   table-layout: fixed;
+  border-collapse: separate;
 }
 .table-head {
   font-size: 12px;
