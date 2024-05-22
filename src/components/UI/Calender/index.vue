@@ -88,7 +88,7 @@ const calenderInitialData = {
 
 <template>
   <div
-    class="booking-ctn calender-box" :class="[!selectedDate && 'only-with-datepicker']"
+    class="booking-ctn calender-box dark:bg-black" :class="[!selectedDate && 'only-with-datepicker']"
   >
     <div class="left-box">
       <!-- 为返回到填写User Info的前一步准备的btn -->

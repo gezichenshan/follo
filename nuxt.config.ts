@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src',
-  modules: ['@unocss/nuxt', '@pinia/nuxt', '@ant-design-vue/nuxt', '@hebilicious/vue-query-nuxt'],
+  modules: ['@unocss/nuxt', '@pinia/nuxt', '@ant-design-vue/nuxt', '@hebilicious/vue-query-nuxt', '@vueuse/nuxt'],
   css: ['@/assets/css/variables.css', '@/assets/css/reboot.css'],
   app: {
     head: {

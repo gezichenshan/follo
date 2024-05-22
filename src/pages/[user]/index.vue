@@ -105,9 +105,15 @@ onMounted(() => {
     }
   }, 100)
 })
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
+  <button @click="toggleDark()">
+    <i inline-block align-middle i="dark:carbon-moon carbon-sun" />
+    <span class="ml-2">{{ isDark ? 'Dark' : 'Light' }}</span>
+  </button>
   <div class="booking-page">
     <div class="back-btn" @click="back">
       <ArrowLeftOutlined />

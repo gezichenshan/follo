@@ -7,4 +7,14 @@
     --text-color:#1a1a1a;
     --text-color-level2:#1a1a1a9c;
     --breakpoint-pad: 1000px;
+
+    --primary-background-color: #fff;
 }
+
+
+@media (prefers-color-scheme: dark) {
+    :root{
+        --primary-background-color: #000;
+        --primary-color:#f00;
+    }
+  }
