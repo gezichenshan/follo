@@ -27,7 +27,7 @@ function handleNext() {
     </button>
     <button v-if="data.selected" class="time-btn btn next cursor-pointer" :class="[data.selected && 'selected']" @click="handleNext">
       <div class="btn-innner ">
-        <div class="time-btn-text">
+        <div class="time-btn-text dark:text-black">
           下一步
         </div>
       </div>
@@ -46,12 +46,12 @@ function handleNext() {
   width: 100%;
   height: 52px;
   border: 1px solid var(--primary-color-level2, rgba(0, 105, 255, 0.5));
-  color: var(--primary-color, rgb(0, 105, 255));
+  color: var(--primary-color);
 }
 .time-btn:hover,
 .time-btn:focus {
   border-width: 2px;
-  border-color: var(--primary-color, rgb(0, 105, 255));
+  border-color: var(--primary-color);
 }
 .time-btn.selected {
   width: 48.5%;
@@ -83,11 +83,11 @@ function handleNext() {
 .text.selected {
   border-color: transparent;
   background-color: rgb(0 0 0 / 60%);
-  color: var(--text-color-secondary-4, rgba(255, 255, 255, 1));
+  color: var(--text-color-level2);
 }
 .next {
   margin-left: 3%;
-  background-color: var(--primary-color, rgb(0, 105, 255));
+  background-color: var(--primary-color);
   color: var(--primary-text-color, #ffffff);
   box-shadow: 0 1px 6px 0 rgb(0 0 0/10%);
   transform: translateX(40px);
@@ -96,7 +96,7 @@ function handleNext() {
   transform: translateX(0);
 }
 .next:hover {
-  background-color: var(--text-color-secondary-3, rgba(0, 102, 230, 1));
+  background-color: var(--primary-color);
 }
 
 .time-btn-text {

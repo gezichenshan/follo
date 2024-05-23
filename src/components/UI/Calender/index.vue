@@ -87,41 +87,44 @@ const calenderInitialData = {
 </script>
 
 <template>
-  <div
-    class="booking-ctn calender-box dark:bg-black" :class="[!selectedDate && 'only-with-datepicker']"
-  >
-    <div class="left-box">
-      <!-- 为返回到填写User Info的前一步准备的btn -->
-      <a-button v-if="step === 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" @click="backToStepBeforeUserInfo" />
-      <!-- 为小屏幕上返回到选择时间的前一步准备的btn -->
-      <a-button v-if="step !== 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" class="small-device-back-btn" :class="[!selectedDate && 'only-with-datepicker']" @click="backToSmallDeviceDateSelectStep" />
-      <h2>Gezichenshan YU</h2>
-    </div>
-    <div class="right-box" :class="selectedDate && 'large'">
-      <h2 class="picker-title">
-        {{ step === 2 ? '请填写基本信息' : '请选择日期和时间' }}
-      </h2>
-      <div v-if="step === 1" class="right-box-content" :class="[!selectedDate && 'only-with-datepicker']">
-        <UICalenderDatepicker
-          :dates="propDates"
-          :initial-data="calenderInitialData" class="datepicker-outter-wrap" :class="[!selectedDate && 'only-with-datepicker']" @change="handleDateChange"
-          @month-change="handleMonthChange"
-        />
-        <UICalenderTimePicker v-if="selectedDate" :is-loading="isLoading" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
-        <div v-if="isLoading" class="loading-mask absolute inset-0">
-          <a-spin class="spinner" />
+  <a-card>
+    <div
+      class="booking-ctn calender-box" :class="[!selectedDate && 'only-with-datepicker']"
+    >
+      <div class="left-box">
+        <!-- 为返回到填写User Info的前一步准备的btn -->
+        <a-button v-if="step === 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" @click="backToStepBeforeUserInfo" />
+        <!-- 为小屏幕上返回到选择时间的前一步准备的btn -->
+        <a-button v-if="step !== 2" type="primary" shape="circle" :icon="h(ArrowLeftOutlined)" class="small-device-back-btn" :class="[!selectedDate && 'only-with-datepicker']" @click="backToSmallDeviceDateSelectStep" />
+        <h2>Gezichenshan YU</h2>
+      </div>
+      <a-divider type="vertical" style="height: auto;" />
+      <div class="right-box" :class="selectedDate && 'large'">
+        <h2 class="picker-title">
+          {{ step === 2 ? '请填写基本信息' : '请选择日期和时间' }}
+        </h2>
+        <div v-if="step === 1" class="right-box-content" :class="[!selectedDate && 'only-with-datepicker']">
+          <UICalenderDatepicker
+            :dates="propDates"
+            :initial-data="calenderInitialData" class="datepicker-outter-wrap" :class="[!selectedDate && 'only-with-datepicker']" @change="handleDateChange"
+            @month-change="handleMonthChange"
+          />
+          <UICalenderTimePicker v-if="selectedDate" :is-loading="isLoading" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
+          <div v-if="isLoading" class="loading-mask absolute inset-0">
+            <a-spin class="spinner" />
+          </div>
+        </div>
+        <div v-if="step === 2" class="right-box-content step-2-wrap">
+          <FormUserInfo />
         </div>
       </div>
-      <div v-if="step === 2" class="right-box-content step-2-wrap">
-        <FormUserInfo />
-      </div>
     </div>
-  </div>
+  </a-card>
 </template>
 
 <style scoped>
 .booking-ctn {
-  width: 95%;
+  /* width: 95%; */
   transition: all 0.22s ease-out;
 }
 .booking-ctn {
@@ -136,14 +139,10 @@ const calenderInitialData = {
 }
 .calender-box {
   display: flex;
-  border: 1px solid var(--text-color-level3, rgba(26, 26, 26, 0.1));
-  border-radius: 8px;
-  box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
   max-width: 1060px;
 }
 .left-box {
   min-width: 300px;
-  border-right: 1px solid var(--text-color-level3, rgba(26, 26, 26, 0.1));
   transition: all 0.22s ease-out;
 }
 .right-box {
@@ -161,20 +160,18 @@ const calenderInitialData = {
 .right-box-content {
   display: flex;
   overflow: hidden;
+  min-height: 457px;
 }
 
 .right-box-content.only-with-datepicker {
   max-width: 400px;
   margin: 0 auto;
 }
-.right-box-content.step-2-wrap {
-  /* width: 651px; */
-}
 .loading-mask {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.5);
+  /* background-color: rgba(255, 255, 255, 0.5); */
 }
 .loading-mask .spinner {
   transform: translateY(-50px);

@@ -148,7 +148,7 @@ watch(selectedDate, () => {
 }
 .table-head {
   font-size: 12px;
-  color: var(--text-color);
+  user-select: none;
 }
 
 @media (max-width: 650px) {

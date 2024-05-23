@@ -1,7 +1,13 @@
+
+
 :root {
+
     --primary-color:#2c67f6;
+    --primary-color-level2:rgba(0, 105, 255, 0.5);
     --primary-color-level3:#0069ff26;
     --primary-color-level4:#f1f5fe;
+
+    --primary-bg-color:transparent;
 
     --primary-text-color:#ffffff;
     --text-color:#1a1a1a;
@@ -12,9 +18,14 @@
 }
 
 
-@media (prefers-color-scheme: dark) {
-    :root{
-        --primary-background-color: #000;
-        --primary-color:#f00;
-    }
-  }
+
+
+html.dark {
+    --primary-color:#ddd;
+    --primary-color-level2:#999;
+    --primary-color-level3:#999;
+    --primary-color-level4:#666;
+    --primary-background-color: #000;
+
+    --text-color-level2:#999;
+}
