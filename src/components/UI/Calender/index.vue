@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { h } from 'vue'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
-import type { DateItem, TimeObj } from '@/model'
+import type { DateItem, EventSchedulingFormData, TimeObj } from '@/model'
 
 interface Props {
   allDates: DateItem[]
@@ -17,7 +17,7 @@ interface Props {
   }
 }
 const props = defineProps<Props>()
-const emits = defineEmits(['update:month', 'update:date', 'update:time'])
+const emits = defineEmits(['update:month', 'update:date', 'update:time', 'submit'])
 
 const { allDates: propDates, allDatesInSelectedDateMonth: propsDatesInSelectedDateMonth, isLoading, initialData } = toRefs(props)
 
@@ -84,6 +84,9 @@ const calenderInitialData = {
   month: initialData.value?.month,
   date: initialData.value?.date,
 }
+function handleFormSubmit(data: Partial<EventSchedulingFormData>) {
+  emits('submit', data)
+}
 </script>
 
 <template>
@@ -109,13 +112,13 @@ const calenderInitialData = {
             :initial-data="calenderInitialData" class="datepicker-outter-wrap" :class="[!selectedDate && 'only-with-datepicker']" @change="handleDateChange"
             @month-change="handleMonthChange"
           />
-          <UICalenderTimePicker v-if="selectedDate" :is-loading="isLoading" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @submit="handleNextStep" />
+          <UICalenderTimePicker v-if="selectedDate" :is-loading="isLoading" :span="24" :lg="12" class="timepicker-outter-wrap" :available-times="availableTimes" :date="selectedDate" @change="handleTimeChange" @next="handleNextStep" />
           <div v-if="isLoading" class="loading-mask absolute inset-0">
             <a-spin class="spinner" />
           </div>
         </div>
         <div v-if="step === 2" class="right-box-content step-2-wrap">
-          <FormUserInfo />
+          <FormUserInfo @submit="handleFormSubmit" />
         </div>
       </div>
     </div>

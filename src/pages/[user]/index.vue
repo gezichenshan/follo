@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { getAvailableDates } from '@/services/api'
-import type { DateItem } from '~/model'
+import type { AxiosError } from 'axios'
+import { getAvailableDates, submitAnInvitation } from '@/services/api'
+import type { DateItem, EventSchedulingFormData } from '~/model'
 
 // import _ from 'lodash'
 
@@ -10,6 +11,7 @@ const date = ref<string>()
 const time = ref<string>()
 const route = useRoute()
 const router = useRouter()
+const meetingScheduled = ref(false)
 
 const apiEnabled = computed(() => {
   return !!month.value
@@ -51,6 +53,17 @@ const { data: serverDateRangeInSelectedDateMonth } = useQuery({
   queryKey: ['dates-in-selected-date-month', date],
   queryFn: () => getAvailableDates({ event_type_id: '1', range_start: monthInSelectedDateStartDate.value, range_end: monthInSelectedDateEndDate.value }), // Use $fetch with your api routes to get typesafety
   enabled: datesInSelectedDateMonthApiEnabled,
+})
+
+const { mutate } = useMutation({
+  mutationFn: (data: EventSchedulingFormData) => submitAnInvitation(data),
+  onSuccess() {
+    message.success('我们已收到信息!')
+    meetingScheduled.value = true
+  },
+  onError(err: AxiosError) {
+    message.error(err.response?.data.msg as string)
+  },
 })
 
 function back() {
@@ -105,6 +118,18 @@ onMounted(() => {
     }
   }, 100)
 })
+
+function handleSubmit(data: Partial<EventSchedulingFormData>) {
+  const payload: EventSchedulingFormData = {
+    email: data.email!,
+    name: data.name!,
+    phone: data.phone!,
+    note: data.note,
+    event_type_id: '2f726cde-2189-471e-bd78-ee5445d8b447',
+    start_time: `${date.value} ${time.value}:00`,
+  }
+  mutate(payload)
+}
 </script>
 
 <template>
@@ -113,7 +138,10 @@ onMounted(() => {
       <div class="back-btn" @click="back">
         <ArrowLeftOutlined />
       </div>
-      <UICalender v-model:date="date" v-model:time="time" v-model:month="month" :is-loading="isLoading" :all-dates-in-selected-date-month="allDatesInSelectedDateMonth" :all-dates="allDates" :initial-data="calenderInitialData" class="booking-ctn" />
+      <UICalender v-if="!meetingScheduled" v-model:date="date" v-model:time="time" v-model:month="month" :is-loading="isLoading" :all-dates-in-selected-date-month="allDatesInSelectedDateMonth" :all-dates="allDates" :initial-data="calenderInitialData" class="booking-ctn" @submit="handleSubmit" />
+      <a-card v-else sclass="booking-ctn">
+        会议请求已收到，等待老师联系。
+      </a-card>
     </div>
   </a-layout>
 </template>

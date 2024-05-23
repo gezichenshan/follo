@@ -26,3 +26,12 @@ export interface ServerTimeItem {
   start_time: string
   status: AvailableStatus
 }
+
+export interface EventSchedulingFormData {
+  email: string
+  event_type_id: string
+  name: string
+  phone: string
+  start_time: string
+  note?: string
+}
