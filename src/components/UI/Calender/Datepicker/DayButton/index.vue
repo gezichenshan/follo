@@ -52,7 +52,7 @@ function handleClick(date: DateItem) {
   cursor: pointer;
 }
 .date-btn.selected {
-  color: var(--primary-color-level3);
+  color: var(--text-color-calender-selected);
   background-color: var(--primary-color);
   cursor: default;
 }

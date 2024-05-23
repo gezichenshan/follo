@@ -7,11 +7,13 @@
     --primary-color-level3:#0069ff26;
     --primary-color-level4:#f1f5fe;
 
+
     --primary-bg-color:transparent;
 
     --primary-text-color:#ffffff;
     --text-color:#1a1a1a;
     --text-color-level2:#1a1a1a9c;
+    --text-color-calender-selected:#fff;
     --breakpoint-pad: 1000px;
 
     --primary-background-color: #fff;
@@ -28,4 +30,5 @@ html.dark {
     --primary-background-color: #000;
 
     --text-color-level2:#999;
+    --text-color-calender-selected:#999;
 }
