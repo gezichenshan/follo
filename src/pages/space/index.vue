@@ -46,7 +46,7 @@ function jumpTo(url: string) {
         <div class="media-container">
           <h3>内容平台</h3>
           <div class="d-flex flex-wrap">
-            <a class="media-item" href="https://www.xiaohongshu.com/user/profile/6643258b000000000700424c" target="_blank">
+            <a class="media-item" href="https://www.xiaohongshu.com/user/profile/5decf6f7000000000100b141" target="_blank">
               <img src="@/../public/logo-redbook.png" alt="">
             </a>
             <a class="media-item" href="https://www.douyin.com/user/MS4wLjABAAAAeWnQ-nc9HilmjDgueLsyAGN_SrWKJIWxb_vwMnald9Y" target="_blank">
