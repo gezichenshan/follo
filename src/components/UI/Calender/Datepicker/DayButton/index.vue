@@ -39,10 +39,11 @@ function handleClick(date: DateItem) {
   color: var(--text-color-level2, rgba(26, 26, 26, 0.61));
   font-size: 16px;
   text-align: center;
-  background-color: #fff;
+  background-color: var(--primary-bg-color);
+  user-select: none;
 }
 .date-btn.enabled {
-  color: #0060e6;
+  color: var(--primary-color);
   background-color: var(--primary-color-level4);
   font-weight: 700;
 }
@@ -51,7 +52,7 @@ function handleClick(date: DateItem) {
   cursor: pointer;
 }
 .date-btn.selected {
-  color: #fff;
+  color: var(--text-color-calender-selected);
   background-color: var(--primary-color);
   cursor: default;
 }

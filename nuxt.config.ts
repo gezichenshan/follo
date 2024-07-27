@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   srcDir: 'src',
-  modules: ['@unocss/nuxt', '@pinia/nuxt', '@ant-design-vue/nuxt'],
+  modules: ['@unocss/nuxt', '@pinia/nuxt', '@ant-design-vue/nuxt', '@hebilicious/vue-query-nuxt', '@vueuse/nuxt'],
   css: ['@/assets/css/variables.css', '@/assets/css/reboot.css'],
   app: {
     head: {
@@ -14,6 +14,12 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       ],
+    },
+  },
+  ssr: false,
+  runtimeConfig: {
+    public: {
+      apiBase: '',
     },
   },
 })
